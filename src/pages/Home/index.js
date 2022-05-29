@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import * as S from './style';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
-
+  const navigate = useNavigate();
   const [ usuario, setUsuario ] = useState('');
 
   function handlePesquisa () {
@@ -17,6 +18,7 @@ function App() {
         });
         localStorage.setItem('repositoriesName', JSON.stringify(repositoriesName));
         
+        navigate('/repositories');
       })
   }
 
