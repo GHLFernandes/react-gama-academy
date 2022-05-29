@@ -1,16 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import axios from 'axios';
 
 function App() {
+
+  const [ usuario, setUsuario ] = useState('');
+
+  function handlePesquisa () {
+    axios.get(`https://api.github.com/users/${usuario}/repos`)
+      .then(response => console.log(response.data))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello Gama Academy
-        </p>
-      </header>
-    </div>
+    <> 
+      <input className='inputUsuario' placeholder='Usuario' onChange={ e => setUsuario(e.target.value)} value={usuario} />
+      <button type='button' onClick={handlePesquisa}>Pesquisar</button>
+      <p>{usuario}</p>
+    </>
   );
 }
 
