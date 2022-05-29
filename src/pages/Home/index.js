@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function App() {
   const navigate = useNavigate();
   const [ usuario, setUsuario ] = useState('');
+  const [ erro, setErro ] = useState(false);
 
   function handlePesquisa () {
     axios.get(`https://api.github.com/users/${usuario}/repos`)
@@ -17,16 +18,22 @@ function App() {
           repositoriesName.push(repository.name);
         });
         localStorage.setItem('repositoriesName', JSON.stringify(repositoriesName));
-        
+        setErro(false);
         navigate('/repositories');
+      })
+      .catch(err => {
+        setErro(true);
       })
   }
 
   return (
-    <S.Container> 
-      <S.Input className='inputUsuario' placeholder='Usuario' onChange={ e => setUsuario(e.target.value)} value={usuario} />
-      <S.Button type='button' onClick={handlePesquisa}>Pesquisar</S.Button>
-    </S.Container>
+    <S.HomeContainer>
+      <S.Content> 
+        <S.Input className='inputUsuario' placeholder='Usuario' onChange={ e => setUsuario(e.target.value)} value={usuario} />
+        <S.Button type='button' onClick={handlePesquisa}>Pesquisar</S.Button>
+      </S.Content>
+      { erro ? <S.ErrorMsg>Ocorreu um erro. Tente novamente.</S.ErrorMsg> : '' }
+    </S.HomeContainer>
   );
 }
 
